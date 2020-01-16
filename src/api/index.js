@@ -1,62 +1,14 @@
-import axios from 'axios'
-import history from '../history'
+import axios from "axios";
 
-axios.defaults.baseURL = 'http://localhost:49160/'
+axios.defaults.baseURL = "http://localhost:3000/";
 
-const authenticate = ({email, password}) => {
-  return axios.post(
-    '/auth',
-    {
-      email,
-      password
-    }
-  )
-    .then(resp => {
-      const { token } = resp.data
-      axios.defaults.headers.common['access-token'] = token
-      return token
-    })
-    .catch(err => {
-      console.log(err)
-      return null
-    })
-}
-
-const getProjects = () => {
-  return axios.get(
-    '/projects'
-  )
-    .then(resp => resp.data)
-    .catch(err => {
-      console.log(err)
-      history.push('/')
-    })
-}
-
-const getTimekeepers = () => {
-  return axios.get(
-    '/timekeeper'
-  )
-    .then(resp => resp.data)
-    .catch(err => {
-      console.log(err)
-      history.push('/')
-    })
-}
-
-const createTimekeeper = ({ workingTime , workingDate, projectId }) => {
-  return axios.post(
-    '/timekeeper',
-    { workingTime , workingDate, projectId }
-  )
-    .then(()=>history.push('/projects'))
-}
-
-const api = {
-  authenticate,
-  getProjects,
-  getTimekeepers,
-  createTimekeeper
-}
-
-export default api
+export default {
+  sendCSV: ({ file }) =>
+    axios.post("", file, {
+      headers: {
+        "Content-Type": "multipart/form-data"
+      }
+    }),
+  getDatasets: () => axios.get("/dataset"),
+  getErrors: id => axios.get(`/dataset/${id}/errors`)
+};
